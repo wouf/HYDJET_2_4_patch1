@@ -255,7 +255,7 @@ void InitialStateHydjet::Initialize(List_t &source, ParticleAllocator & allocato
         if(abs(encoding)==443)Mparam = Mparam * gammaC;  
     
    
-        Int_t multiplicity = gRandom->Poisson(Mparam);
+        Int_t multiplicity = (int)(gRandom->PoissonD(Mparam));
 
       //      cout << "specie: " << encoding << "; average mult: = " << Mparam << "; multiplicity = " << multiplicity << endl;
       

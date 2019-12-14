@@ -280,21 +280,20 @@ std::cout<<" *******************************************************************
     nev = ev;
     // Initialize the source
     FASTMC->Initialize(particleList, allocator);
-    if(particleList.empty()) {
-      Error("RunHadronSource::main", "Source is not initialized!!");
-      //return 0;
-      continue;  
-    }
-    
-    // Run the decays //fDecay
-    if(FASTMC->RunDecays()) 
-      FASTMC->Evolve(particleList, allocator, FASTMC->GetWeakDecayLimit());
+
+    if(particleList.empty()){
+      if(/*TODO: Not allow empty events prarameter here*/false){
+        --ev;
+        continue;
+      }
+      std::cout<<" Warning! Empty event! "<<std::endl;  
+    }else if(FASTMC->RunDecays()) FASTMC->Evolve(particleList, allocator, FASTMC->GetWeakDecayLimit());
    
     std::cout << "event #" << ev << "\r" << std::flush;
     LPIT_t it;
     LPIT_t e;
-    
-    for(it = particleList.begin(), e = particleList.end(); it != e; ++it) {
+    if(!particleList.empty())      
+     for(it = particleList.begin(), e = particleList.end(); it != e; ++it) {
       TVector3 pos(it->Pos().Vect());
       TVector3 mom(it->Mom().Vect());
       Float_t m1 = it->TableMass();

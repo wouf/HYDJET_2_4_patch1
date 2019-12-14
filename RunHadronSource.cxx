@@ -302,26 +302,23 @@ std::cout<<" *******************************************************************
       Sigjet=HYJPAR.sigjet;
     }
     
-    if(particleList.empty()) {
-      Error("RunHadronSource::main", "Source is not initialized!!");
-      return 0;
-    }
-
-    // Run the decays
-    if(FASTMC->RunDecays())
-      FASTMC->Evolve(particleList, allocator, FASTMC->GetWeakDecayLimit());
+    if(particleList.empty()){
+      if(/*TODO: Not allow empty events prarameter here*/false){
+        --ev;
+        continue;
+      }
+      std::cout<<" Warning! Empty event! "<<std::endl;  
+    }else if(FASTMC->RunDecays()) FASTMC->Evolve(particleList, allocator, FASTMC->GetWeakDecayLimit());
 
     std::cout << "event #" << ev << "\r" << std::flush;
-    Ntot = 0;
-    Npyt = 0;
-    Nhyd = 0;
     
     LPIT_t it;
     LPIT_t e;
         
     // Fill the decayed tree
-    Ntot = 0; Nhyd=0; Npyt=0;      
-    for(it = particleList.begin(), e = particleList.end(); it != e; ++it) {
+    Ntot = 0; Nhyd=0; Npyt=0;    
+    if(!particleList.empty())      
+     for(it = particleList.begin(), e = particleList.end(); it != e; ++it) {
       TVector3 pos(it->Pos().Vect());
       TVector3 mom(it->Mom().Vect());
       Float_t m1 = it->TableMass();
