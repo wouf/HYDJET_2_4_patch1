@@ -1,0 +1,21 @@
+Install the ROOT package (http://root.cern.ch/) and ensure the ROOTSYS environment variable is set. Add the ROOT installation directory to $PATH and $LD_LIBRARY_PATH. e.g. 
+                     ROOTSYS=$HOME/ROOT/root
+                     PATH=$ROOTSYS/bin:$PATH
+                     LD_LIBRARY_PATH=$ROOTSYS/lib:${LD_LIBRARY_PATH}
+
+Run "make" for ROOT tree output
+Run "make histo" for ROOT histogram output.
+ 
+This will create the executable file "HYDJET" (or "HYDJET_HISTO") in the same 
+directory. Once the program is compiled, one can use the executables above 
+to start a simulation run. The input file necessary to run HYDJET++ must always 
+be named "RunInputHydjet", so after preparing this file one can start the 
+simulation with the command line: 
+"./HYDJET" (for ROOT tree output), or 
+"./HYDJET_HISTO" (for ROOT histogram output). 
+If an output file is not specified then the event records will be automatically 
+directed to the file "RunOutput.root" (or "RunOutputHisto.root").
+(see DOC/hydjet++.txt).
+
+The .root files produced by HYDJET and HYDJET_HISTO can be viewed using the C++ 
+programs (macros) stored in the RootMacros directory.  

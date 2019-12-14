@@ -1,0 +1,324 @@
+      -------------------------------------------------------------
+      HYDJET++, event generator for simulation of relativistic heavy 
+      ion AA collisions considered as a superposition of the soft, 
+      hydro-type state and the hard state resulting from multi-parton 
+      fragmentation.
+      -------------------------------------------------------------
+      The main program is written in the object-oriented C++ language 
+      under the ROOT environment. The hard part of HYDJET++ is 
+      identical to the hard part of Fortran-written HYDJET (includes 
+      PYTHIA6.4xx + PYQUEN1.5) and it is included in the generator 
+      structure as a separate directory. The soft part of HYDJET++ 
+      event is the "thermal" hadronic state generated on the chemical 
+      and thermal freeze-out hypersurfaces obtained from the 
+      parameterization of relativistic hydrodynamics with preset  
+      freeze-out conditions. It includes the longitudinal, radial and 
+      elliptic flow effects and the decays of hadronic resonances. 
+      The corresponding fast Monte-Carlo simulation procedure, C++
+      code FAST MC is adapted to HYDJET++.
+      --------------------------------------------------------------
+
+      Igor Lokhtin, SINP MSU, Moscow, RU
+      e-mail: Igor.Lokhtin@cern.ch 
+
+      Ludmila Malinina, SINP MSU, Moscow, RU
+      e-mail: malinina@lav01.sinp.msu.ru 
+      
+      --------------------------------------------------------------
+      
+      Main reference for HYDJET++:
+      I.P. Lokhtin, L.V. Malinina, S.V. Petrushanko, A.M. Snigirev, 
+      I. Arsene, K. Tywoniuk, Comp. Phys. Commun. 180 (2009) 779.
+
+      Reference for HYDJET and PYQUEN: 
+      I.P. Lokhtin, A.M. Snigirev, Eur. Phys. J. C 45 (2006) 211.
+
+      Reference for PYTHIA6.4:  
+      T.Sjostrand, S. Mrenna and P. Skands, JHEP05 (2006) 026.
+      
+      References for FAST MC:  
+      N.S. Amelin, R. Lednicky, T.A. Pocheptsov, I.P. Lokhtin, 
+      L.V. Malinina, A.M. Snigirev, Iu.A. Karpenko and Yu.M. Sinyukov, 
+      Phys. Rev. C 74 (2006) 064901;
+      N.S. Amelin, I. Arsene, L. Bravina, Iu.A. Karpenko, R. Lednicky, 
+      I.P. Lokhtin, L.V. Malinina, A.M. Snigirev and Yu.M. Sinyukov, 
+      Phys. Rev. C 77 (2008) 014903.  
+      
+      Reference for nuclear shadowing model:
+      K. Tywoniuk, I.C. Arsene, L. Bravina, A. Kaidalov and 
+      E. Zabrodin, Phys. Lett. B 657 (2007) 170.
+      
+      -------------------------------------------------------------- 
+      Web-page: 
+      http://cern.ch/lokhtin/hydjet++
+      --------------------------------------------------------------
+
+
+      Description of the generator
+
+
+Installation
+------------
+The archive HYDJET++.ZIP contains the following files and directories: 
+- the Makefile;
+- input files (RunInputHydjet200, RunInputHydjetRHIC2760, RunInputHydjetLHC5020);
+- HYDJET directory with inc (*.h files), src (*.cxx files) and 
+  SHARE data files (particle.data, tabledecay.txt); 
+- PYQUEN directory with *.f files; 
+- DOC directory (with short description and update notes for new versions);
+- RootMacros directory (the examples allowing one to obtain some physical 
+  results with HYDJET++, detailed comments are in the macros).
+  
+
+In order to run HYDJET++ on Linux one needs:
+1) C++ and Fortran compilers;
+2) ROOT libraries and include files.
+The main program is in the files "RunHadronSource.cxx" (for ROOT tree output) 
+or "RunHadronSourceHisto.cxx" (for ROOT histogram output). To compile the 
+package one needs to use the following commands in the main HYDJET directory:
+"make" (for ROOT tree output), or 
+"make histo" (for ROOT histogram output). 
+Then the executable file "HYDJET" (or "HYDJET_HISTO") is created in the same 
+directory. Once the program is compiled, one can use the executables above 
+to start a simulation run. The input file necessary to run HYDJET++ must always 
+be named "RunInputHydjet", so after preparing this file according to the 
+examples included in the package one can start the simulation with the command
+line: 
+"./HYDJET" (for ROOT tree output), or 
+"./HYDJET_HISTO" (for ROOT histogram output). 
+If an output file is not specified then the event records will be automatically 
+directed to the file "RunOutput.root" (or "RunOutputHisto.root").
+         
+
+Input information
+-----------------
+
+Run of the program is controlled by the file "RunInputHydjet" for different 
+type of input parameters. Three files with the optimized parameters for AuAu 
+collisions at 200 A GeV ("RunInputHydjetRHIC200") and for PbPb collisions at 
+2760 A GeV ("RunInputHydjetLHC2760") and 5020 A GeV ("RunInputHydjetLHC5020") 
+are available. To use them as the input one, the user should change the name 
+of the corresponding file to the "RunInputHydjet". The default parameters for 
+"RunInputHydjetRHIC200" and "RunInputHydjetLHC2760" were obtained by fitting 
+various RHIC and LHC data respectively. The default parameters for 
+"RunInputHydjetLHC5020" represent the extrapolation from lower energies. 
+
+
+The following input parameters should be specified: 
+
+  fNevnt - number of events to generate;
+  fSqrtS - c.m.s. energy per nucleon pair in GeV; 
+  fAw - atomic weight of nuclei; 
+  fIfb  - flag of type of centrality generation 
+         =0 impact parameter is fixed (fBfix)  
+	 >0 impact parameter is generated with standard Glauber geometry 
+	    between minimum (fBmin) and maximum (fBmax) values; 
+  fBmin - minimum impact parameter in units of nucleus radius RA;*
+  fBmax - maximum impact parameter in units of nucleus radius RA;*
+  fBfix - fixed impact parameter in units of nucleus radius RA. 
+  
+The following input parameters may be changed by user from their default values. 
+
+  fSeed- parameter to set the random number seed
+         =0 the current time is used to set the random generator seed
+         >0 the value "fSeed" is used to set the random generator seed
+         (then state of random number generator in PYTHIA MRPY(1)=fSeed)
+         (default: fSeed=0);
+   
+Parameters for soft hydro-type part of the event.
+
+  fT- chemical freeze-out temperature in GeV;
+  fMuB - chemical baryon potential per unit charge in GeV;
+  fMuS - chemical strangeness potential per unit charge in GeV;
+  fMuC - chemical charm potential per unit charge in GeV;
+  fMuI3 - chemical isospin potential per unit charge in GeV;
+  fTthFO - thermal freeze-out temperature in GeV; 
+  fMu_th_pip - chemical potential of positively charged pions at thermal 
+  freeze-out in GeV; 
+  fTau - proper time at thermal freeze-out for central collisions in fm/c;
+  fSigmaTau - duration of emission at thermal freeze-out for central collisions 
+  in fm/c; 
+  fR - maximal transverse radius at thermal freeze-out for central collisions 
+  in fm;
+  fYlmax - maximal longitudinal flow rapidity at thermal freeze-out;
+  fUmax - maximal transverse flow rapidity at thermal freeze-out for
+  central collisions;
+  fRhou2, fRhou3, fRhou3 - parameters to specify/switch on(>0)/off(0) elliptic, 
+  triangular and quadrangular modulations of the collective velocity profile 
+  respectively for the alternative scenario of anisotropic flow treatment 
+  (L.V. Bravina et al., Eur. Phys. J. C 74 (2014) 2807) (default: 0., 0., 0.); 
+  fDelta - momentum azimuthal anizotropy parameter at thermal freeze-out 
+  (for given centrality class);
+  fEpsilon - spatial azimuthal anisotropy parameter at thermal freeze-out 
+  (for given centrality class);
+  fKeps2, fKeps3 - parameters to specify/switch on(>0)/off(0) the strenght of 
+  elliptic and triangular flow fluctuations respectively 
+  (L.V. Bravina et al., Eur. Phys. J. C 75 (2015) 588) (default: 0.34, 0.52);
+  fIfDeltaEpsilon - flag to specify fDelta and fEpsilon values (if =0 - 
+  specified by user values are used, if >=1 - calculated values are used)
+  (default: 0.);
+  fDecay - flag to include hadron decays (if =0 - off, if >=1 - on) 
+  (default: 1.);
+  fWeakDecay - low decay width threshold in GeV (if width < fWeakDecay - decay 
+  off, width >= fDecayWidth - decay on; can be used to switch off weak decays) 
+  (default: 0.);
+  fEtaType - flag to specify longitudinal flow rapidity distribution 
+  (if =0 - uniform in the range [-fYlmax,fYlmax], if >0 - Gaussian with 
+  the dispersion fYlmax (default: 1);
+  fTMuType - flag to use calculated chemical freeze-out temperature, baryon and 
+  strangeness potentials as a function of 'fSqrtS' (if =0 - specified by user 
+  values are used, if >0 - calculated values are used) (default: 0);     
+  fCorrS - flag and value to include strangeness supression with fCorrS value: 
+  (0 < fCorrS =< 1, if fCorrS =< 0 then it is calculated as a function of 
+  chemical freeze-out temperature and baryon potential, default: 1);
+  fIcharm - flag to include thermal charm production (=0 no charm production, 
+   >=1 charm production) (default: 0);   
+  fCorrC - flag and value to include charmness enhancement with fCorrC value:
+  (fCorrC > 0, if fCorrC =< 0 then it is calculated with PYTHIA, default: -1). 
+
+Parameters for treatment of hard multi-partonic part of the event.
+
+  fNhsel - flag to include jet and hydro state production (default: 2) 
+  (0 - jet production off, hydro on)
+  (1 - jet production on, jet quenching off, hydro on)
+  (2 - jet production on, jet quenching on, hydro on)
+  (3 - jet production on, jet quenching off, hydro off)  
+  (4 - jet production on, jet quenching on, hydro off); 
+  fIshad - flag to include impact parameter dependent nuclear shadowing 
+  for gluons and light sea quarks (u,d,s) (default: 1): 
+  (0 - no shadowing, 1 - shadowing is included); 
+  fPtmin - minimal pt of parton-parton scattering in PYTHIA event in GeV
+  (the PYTHIA parameter ckin(3)=fPtmin); 
+  fIedit - flag to suppress the output of particle history from PYTHIA (=1 only 
+  final state particles; =0 full particle history from PYTHIA) (default: 1).
+  
+PYQUEN energy loss model parameters,   
+   fT0 - initial maximum temperature (in GeV) of quark-gluon plasma for central 
+   PbPb collisions at mid-rapidity (initial temperature for other centralities 
+   and atomic numbers will be calculated automatically)  
+   (allowed range is 0.2 < fT0 < 2.);
+   fTau0 - proper time of quark-gluon plasma formation in fm/c 
+   (allowed range is 0.01 < fTau0 < 10.);
+   fNf - number of active quark flavours in quark-gluon plasma
+   (fNf=0, 1, 2 or 3); 
+   fIenglu - flag to fix type of in-medium partonic energy loss (default: 0)
+   (fIenglu=0 - radiative and collisional loss, 
+   fIenglu=1 - radiative loss only, fIenglu=2 - collisional loss only);
+   fIanglu - flag to fix type of angular distribution of in-medium 
+   emitted gluons (default: 0)  
+   (fIanglu=0 - small-angular, fIanglu=1 - wide-angular, fIanglu=2 - collinear).  
+
+A number of important PYTHIA parameters also may be changed/specified in 
+RunInputHydjet file. The rest PYTHIA parameters may be changed (if it is 
+necessary) using corresponding common blocks in the file "progs_fortran.f".
+
+NOTE! If specified by user value of such parameter extends out of allowed 
+range, its default value is used in HYDJET++ run. 
+
+NOTE! At this moment nuclear shadowing parameterization is implemented only 
+      for Pb, Au, Pd or Ca ions. 
+
+
+Output information
+------------------
+
+The program output is directed to ROOT file specified by the user in the 
+command line, or by default to "RunOutput.root". The output file contains a 
+tree named "td", which keeps the entire event record including primary particles
+and decay products with their coordinates and momenta information. Each decay
+product contains the unique index of its parent particle so that the entire 
+event history may be obtained. Besides particle information, the output file 
+contains also the following global output parameters for each event. 
+
+Bgen - generated value of impact parameter in units of nucleus radius RA;
+Sigin - total inelastic NN cross section at given "fSqrtS" (in mb); 
+Sigjet - hard scattering NN cross section at given "fSqrtS" & "fPtmin" (in mb); 
+Ntot - generated value of total event multiplicity (Ntot=Nhyd+Npyt);
+Nhyd - generated multiplicity of "soft" hydro-induced particles; 
+Npyt - generated multiplicity of "hard" jet-induced particles;
+Njet - generated number of hard parton-parton scatterings with pt>fPtmin;
+Nbcol - mean number of binary NN sub-collisions at given "Bgen"; 
+Npart - mean number of nucleons-participants at given "Bgen".
+
+The event output tree "ROOT::TTree" is organized as follows:
+
+  td->Branch("nev",&nev,"nev/I"); // event number
+  td->Branch("Bgen",&Bgen,"Bgen/F"); // generated impact parameter 
+  td->Branch("Sigin",&Sigin,"Sigin/F"); // total inelastic NN cross section
+  td->Branch("Sigjet",&Sigjet,"Sigjet/F"); // hard scattering NN cross section
+  td->Branch("Ntot",&Ntot,"Ntot/I"); // total event multiplicity 
+  td->Branch("Nhyd",&Nhyd,"Nhyd/I"); // multiplicity of hydro-induced particles
+  td->Branch("Npyt",&Npyt,"Npyt/I"); // multiplicity of jet-induced particles 
+  td->Branch("Njet",&Njet,"Njet/I"); // number of hard parton-parton scatterings 
+  td->Branch("Nbcol",&Nbcol,"Nbcol/I");  // mean number of NN sub-collisions
+  td->Branch("Npart",&Npart,"Npart/I"); // mean number of nucleon-participants
+  td->Branch("Px",&Px[0],"Px[npart]/F"); // x-component of the momentum, in GeV/c
+  td->Branch("Py",&Py[0],"Py[npart]/F"); // y-component of the momentum, in GeV/c
+  td->Branch("Pz",&Pz[0],"Pz[npart]/F"); // z-component of the momentum, in GeV/c
+  td->Branch("E",&E[0],"E[npart]/F"); // energy, in GeV 
+  td->Branch("X",&X[0],"X[npart]/F"); // x-coordinate at emission point, in fm
+  td->Branch("Y",&Y[0],"Y[npart]/F"); // y-coordinate at emission point, in fm
+  td->Branch("Z",&Z[0],"Z[npart]/F"); // z-coordinate at emission point, in fm
+  td->Branch("T",&T[0],"T[npart]/F"); // proper time of particle emission at 
+                                      // emission point, in fm/c 
+  td->Branch("pdg",&pdg[0],"pdg[npart]/I"); //Geant particle code
+  td->Branch("Mpdg",&Mpdg[0],"Mpdg[npart]/I"); // Geant code of mother particle, 
+                                               // -1 for primordinary particles
+  td->Branch("type",&type[0],"type[npart]/I"); // origin of particle 
+                                                // (=0 - from soft hydro part, 
+                                                //  >0 - from hard jet part)
+  td->Branch("Index",&Index[0],"Index[Ntot]/I"); 
+                                     // unique zero based index of the particle
+  td->Branch("MotherIndex",&MotherIndex[0],"MotherIndex[Ntot]/I"); 
+                 // index of the mother particle (-1 if its a primary particle)
+  td->Branch("NDaughters",&NDaughters[0],"NDaughters[Ntot]/I"); 
+                                                // number of daughter particles
+  td->Branch("FirstDaughterIndex",&FirstDaughterIndex[0],"FirstDaughterIndex[Ntot]/I");
+                        // index of the first daughter (-1 if it does not exist)
+  td->Branch("LastDaughterIndex",&LastDaughterIndex[0],"LastDaughterIndex[Ntot]/I");
+                                                 // index of the last daughter
+  td->Branch("pythiaStatus",&pythiaStatus[0],"pythiaStatus[Ntot]/I");
+                      // PYTHIA status code (-1 if the particle is from soft component)
+  td->Branch("final",&final[0],"final[Ntot]/I");
+   // an integer branch keeping 1 for final state particles and 0 for decayed particles
+
+The possibility to create event output written directly to histograms (in 
+according to user's specification in the file "RunHadronSourceHisto.cxx") is 
+envisaged. The histogram output is directed by default to file 
+"RunOutputHisto.root" or to a file specified explicitily by the user in the 
+command line. 
+  
+      -------------------------------------------------------------------------    
+        
+      Physics validity of the model 
+
+HYDJET++ is only applicable for symmetric AA collisions of heavy (A>40) ions at 
+high energies (c.m.s. energy >~10 GeV per nucleon pair). The results obtained 
+for very peripheral collisions (with the impact parameter about two nucleus 
+radii, b~2*RA) and very forward rapidities may be not adequate.       
+
+   -------------------------------------------------------------------------  
+
+* The ranges of impact parameters in the units of nuclear radius for different 
+centralities at RHIC (AuAu, 200 A GeV) and LHC (PbPb, 2760-5500 A GeV) are 
+specified below (the standard Woods-Saxon nucleon distribution is assumed).
+
+% centrality      b/RA (RHIC)        b/RA (LHC) 
+0                 0                  0          
+5                 0.5                0.51
+6                 0.55               0.57
+10                0.72               0.74 
+12                0.79               0.81
+15		  0.89               0.91
+20                1.02               1.05
+25		  1.15               1.18 
+30                1.26               1.29
+35                1.36               1.39
+40                1.46               1.49
+45		  1.55               1.58
+50		  1.63               1.67
+55		  1.71               1.75  
+60                1.79               1.83
+65		  1.86               1.90
+70		  1.93               1.97 
+75		  2.01               2.06

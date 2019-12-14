@@ -1,0 +1,109 @@
+                  ****************************
+                  *                          *
+                  *       Update notes       *
+                  *                          *
+                  *    HYDJET version 2.4    *
+                  *                          *
+                  ****************************
+ 
+                 (Last updated 1 February 2019) 
+ 
+HYDJET version 2.4 is a direct continuation of previous versions. 
+
+-----------------------------------------------------------------------------
+
+HYDJET2.4: 1 February 2019
+
+1. The strength of the elliptic and triangular flow fluctuations 
+   for soft component can be specified now by user in RunInputHydjet 
+   file with the new parameters 'fKeps2' and 'fKeps3' respectively.
+2. Option to switch on/off elliptic, triangular and quadrangular 
+   modulations of the collective velocity profile for the alternative 
+   scenario of anisotropic flow treatment is introduced. It is controlled 
+   by the new parameters 'fRhou2', 'fRhou3' and 'fRhou4' respectively. 
+3. The bug related with the sometimes incorrect update of the 
+   particle coordinate information is fixed.
+4. Several technical improvements have been done over the code to achieve 
+   better compatibility with latest Root versions and C++/Fortran 
+   compilers.
+
+HYDJET2.3: 30 November 2015
+
+1. The additional elliptic and triangular flow fluctuations for soft 
+   component are introduced via event-by-event Gaussian smearing of 
+   the spatial anisotropy parameters.
+
+HYDJET2.2: 17 December 2013
+
+1. The triangular flow for soft component is introduced via a special 
+   modulation of the freeze-out hypersurface. Third Fourier harmonic of 
+   azimuthal particle distribution appears relatively to new angle 'psiv3' 
+   (randomly distributed with respect to the direction of the impact 
+   parameter, and stored in array SERVICEEV at InitialStateHydjet.cxx). 
+
+2. The treatment of quadrangular flow for soft component is improved.
+
+
+HYDJET2.1: 6 July 2009
+
+1. Option to get output from full particle history for PYTHIA/PYQUEN generated 
+   particles (including partons and strings) is introduced. It is controlled by 
+   the new flag: 
+   fIedit=1 - only final state particles are presented in event output, 
+   fIedit=0 - full particle history from PYTHIA/PYQUEN is produced.
+   By default the full particle history is not produced, fIedit(D=1).
+
+2. Option to produce thermal charmed particles (J/Psi and D mesons) is introduced. 
+   Total number of c-quarks is calculated with PYTHIA, and then thermal charmed 
+   hadrons are generated within the statistical hadronization model. 
+   It is controlled by the new flag: 
+   fIcharm=0 -  thermal charm production is switched off, 
+   fIcharm>=1 - thermal charm production is switched on), 
+   By default thermal charmed particle production is switched off, fIcharm(D=1).
+   The new input parameters fMuC (chemical charm potential) and fCorrC (charmness 
+   enhancement factor) are inroduced. If fCorrC less than zero then is is calculated.
+
+3. The decays of PYTHIA/PYQUEN generated particles are performed by PYTHIA decayer by 
+   default (instead of FASTMC decayer used before), mstj(21)(D=1).
+
+4. Decay channels for K0 mesons are specified in "tabledecay.data" for FASTMC decayer. 
+   K0 is decayed in K0S(50%) and K0L(50%). K0S is further decayed, while K0L is 
+   considered stable.
+
+5. Decay channels for J/Psi, D0+, D0-, D0 and D0-bar mesons are defined in 
+   "tabledecay.data" for FASTMC decayer. Only 2- and 3-body decays from PYTHIA 
+   tables are introduced meaning 77% of full branching for D0+ and D0- mesons, 
+   65% for D0 mesons and 12% for J/psi (the e+e- and mu+mu- channels). 
+   Other decay channels of J/Psi and D mesons are not produced. 
+
+6. Most of the PYTHIA particle codes are added into the particle definition list
+   "particles.data" to accomodate the full particle history.
+
+7. In the output tree, the "Daughter1Index", "Daughter2Index" and "Daughter3Index"
+   branches were removed. Instead, the "FirstDaughterIndex" and "LastDaughterIndex"
+   branches are introduced keeping the index of the first and last daughter, 
+   respectively. In the particle list, all daughter particles for a given particle
+   are stored consecutively. If a particle has no daughters than these branches are
+   -1. Some PYTHIA/PYQUEN particles have daughters but their first and last daughter
+   indexes are -1. This happens for some PYTHIA status codes because PYTHIA keeps 
+   colour flow information instead of the daughter indexes. So the mother index can 
+   be used to reconstruct particle history if needed up to this level.
+
+   In the output tree, the "pythiaStatus" branch was added. This will keep the
+   PYTHIA status code k(i,1) for each particle from the hard component of HYDJET++ 
+   (see PYTHIA manual for the code definitions). Particles from the soft component 
+   (type=1) have pythiaStatus=-1.
+
+   In the output tree, the "final" branch was added. This is an integer branch keeping 1 
+   for final state particles and 0 for decayed particles. This flag can be used for 
+   particles from both hard and soft components. Final state particles can be    determined 
+   also in a more complicated way. For particles from hard component (type=1), the  final 
+   state particles must have pythiaStatus=1 and zero daughters. For particles from soft 
+   component (type=0), the final state particles must have zero daughters.
+
+8. Makefile is modified. Now single Makefile is used for both root tree and histogram output. 
+   By default Makefile uses g77 as fortran compiler. If g77 is not found, Makefile switches 
+   to gfortran.
+
+9. The file with default input parameters for c.m.s energy 2.76 A TeV "RunInputHydjetLHC2760" 
+   is added (3 March 2011). 

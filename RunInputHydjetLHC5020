@@ -1,0 +1,176 @@
+  Number of events to generate
+10
+  C.m.s. energy per nucleon pair, fSqrtS [GeV]
+5020.
+  Atomic weigth of nuclei, fAw
+208.
+  Flag of type of centrality generation, fBfix (=0 is fixed by fBfix, >0 distributed [fBfmin, fBmax])
+1
+  Minimum impact parameter in units of nuclear radius, fBmin
+0.
+  Maximum impact parameter in units of nuclear radius, fBmax
+0.51
+  Fixed impact parameter in units of nuclear radius, fBfix
+0.
+  Parameter to set random number seed, fSeed (=0 the current time is used, >0 the value fSeed is used) 
+0  
+  Temperature at chemical freeze-out, fT [GeV]
+0.165
+  Chemical baryon potential per unit charge, fMuB [GeV]
+0.
+  Chemical strangeness potential per unit charge, fMuS [GeV]  
+0. 
+  Chemical charm potential per unit charge, fMuC [GeV] (used if charm production is turned on)  
+0.
+  Chemical isospin potential per unit charge, fMuI3 [GeV]      
+0.
+  Temperature at thermal freeze-out, fTthFO [GeV]
+0.105
+  Chemical potential of pi+ at thermal freeze-out, fMu_th_pip [GeV] 
+0.
+  Proper time proper at thermal freeze-out for central collisions, fTau [fm/c]
+13.2
+  Duration of emission at thermal freeze-out for central collisions, fSigmaTau [fm/c]
+2.
+  Maximal transverse radius at thermal freeze-out for central collisions, fR [fm]
+13.9
+  Maximal longitudinal flow rapidity at thermal freeze-out, fYlmax
+4.5     
+  Maximal transverse flow rapidity at thermal freeze-out for central collisions, fUmax
+1.35 
+  Parameter to specify/switch ON(>0)/OFF(0) elliptic modulations of collective velocity profile for the alternative treatment of anisotropic flow, fRhou2 
+0.0 
+  Parameter to specify/switch ON(>0)/OFF(0) triangular modulations of collective velocity profile for the alternative treatment of anisotropic flow, fRhou3 
+0.0 
+  Parameter to specify/switch ON(>0)/OFF(0) quadrangular modulations of collective velocity profile for the alternative treatment of anisotropic flow, fRhou4 
+0.0 
+  Momentum azimuthal anizotropy parameter at thermal freeze-out, fDelta
+0.1
+  Spatial azimuthal anisotropy parameter at thermal freeze-out, fEpsilon
+0.05
+  Parameter to specify/switch ON(>0)/OFF(0) elliptic flow fluctuations, fKeps2 
+0.34
+  Parameter to specify/switch ON(>0)/OFF(0) triangular flow fluctuations, fKeps3 
+0.52
+  Flag to specify fDelta and fEpsilon values, fIfDeltaEpsilon (=0 user's ones, >=1 calculated) 
+1.
+  Flag to switch on/off hadron decays, fDecay (=0 decays off, >=1 decays on)
+1.
+  Low decay width threshold fWeakDecay[GeV]: width<fWeakDecay decay off, width>=fDecayWidth decay on; can be used to switch off weak decays
+0.000000000000001
+  Flag to choose rapidity distribution, fEtaType (=0 uniform, >0 Gaussian with the dispersion Ylmax)
+1.
+  Flag to use calculated T_ch, mu_B and mu_S as a function of fSqrtS, fTMuType (=0 user's ones, >0 calculated) 
+0.
+  Strangeness supression factor gamma_s with fCorrS value (0<fCorrS <=1, if fCorrS <= 0 then it is calculated)  
+1.
+  Flag to include thermal charm production, fIcharm (=0 no charm production, >=1 charm production) 
+1
+  Charmness enhancement factor gamma_c with fCorrC value (fCorrC >0, if fCorrC<0 then it is calculated)
+-1
+  Flag to include jet (J)/jet quenching (JQ) and hydro (H) state production, fNhsel (0 H on & J off, 1 H/J on & JQ off, 2 H/J/HQ on, 3 J on & H/JQ off, 4 H off & J/JQ on)
+2
+  Flag to suppress the output of particle history from PYTHIA, fIedit (=1 only final state particles; =0 full particle history from PYTHIA)
+1
+  Flag to switch on/off nuclear shadowing, fIshad (0 shadowing off, 1 shadowing on)
+1
+  Minimal pt of parton-parton scattering in PYTHIA event, fPtmin [GeV/c] 
+10.
+  Initial QGP temperature for central Pb+Pb collisions in mid-rapidity, fT0 [GeV] 
+1.1
+  Proper QGP formation time in fm/c, fTau0 (0.01<fTau0<10)
+0.1
+  Number of active quark flavours in QGP, fNf (0, 1, 2 or 3)
+0
+  Flag to fixe type of partonic energy loss, fIenglu (0 radiative and collisional loss, 1 radiative loss only, 2 collisional loss only)
+0
+  Flag to fix type of angular distribution of in-medium emitted gluons, fIanglu (0 small-angular, 1 wide-angular, 2 collinear).
+1
+ ----------Main PYTHIA parameters-------------------- 
+0 
+ MSEL, type of hard QCD production process  
+1
+ MSTU(21), controle parameter to avoid stopping run 
+1                     
+ PARU(14), tolerance parameter to adjust fragmentation 
+1.
+ MSTP(81), pp multiple scattering on 
+1
+ MSTJ(21), hadron decays on (if off - decays by FASTMC decayer) 
+1        
+ MSTP(2), which order running alphaS 
+1
+ MSTP(33), inclusion of k factor in cross section 
+0
+ MSTP(51), structure function chosen - CTEQ5M pdf 
+7                
+ MSTP(82), defines the multi-parton model 
+4
+ PARP(67), amount of initial-state radiation 
+2.65
+ PARP(82), pt cutoff for multiparton interactions 
+1.9     
+ MSTJ(11), Choice of the fragmentation function 
+5 
+-- flags to select dijet production channels (active if msel=0):                                            
+0 
+ MSUB(11),  q+q->q+q 
+1      
+ MSUB(12), q+qbar->q+qbar 
+1      
+ MSUB(13), q+qbar->g+g 
+1
+ MSUB(28),  q+g->q+g 
+1
+ MSUB(53),  g+g->q+qbar 
+1                                            
+ MSUB(68),  g+g->g+g 
+1                                            
+ ---flags to select prompt photon production channels (active if msel=0):
+0  
+MSUB(14),  q+qbar->g+gamma 
+1                                            
+ MSUB(18), q+qbar->gamma+gamma 
+1
+ MSUB(29), q+g->q+gamma 
+1                                            
+ MSUB(114), g+g->gamma+gamma 
+1
+ MSUB(115),  g+g->g+gamma 
+1                                            
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+The estimation of momentum and spatial anisotropy parameters for different centralities
+
+% centrality   fEpsilon   fDelta
+     0-5%        0.05      0.10
+    5-10%        0.10      0.24
+   10-20%        0.11      0.28 
+   20-30%        0.13      0.33 
+   30-40%        0.14      0.35 
+   40-60%        0.15      0.37
+
+The ranges of impact parameters in the units of nuclear radius for different 
+centralities at RHIC (AuAu, 200 A GeV) and LHC (PbPb, 2760-5500 A GeV) are 
+specified below (the standard Woods-Saxon nucleon distribution is assumed).
+
+% centrality      b/RA (RHIC)        b/RA (LHC) 
+0                 0                  0          
+5                 0.5                0.51
+6                 0.55               0.57
+10                0.72               0.74 
+12                0.79               0.81
+15		  0.89               0.91
+20                1.02               1.05
+25		  1.15               1.18 
+30                1.26               1.29
+35                1.36               1.39
+40                1.46               1.49
+45		  1.55               1.58
+50		  1.63               1.67
+55		  1.71               1.75  
+60                1.79               1.83
+65		  1.86               1.90
+70		  1.93               1.97 
+75		  2.01               2.06
